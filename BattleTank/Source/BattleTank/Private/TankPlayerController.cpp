@@ -5,18 +5,17 @@
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("Tank Player Controller Calling"));
 
 	ATank* tank = GetControlledTank();
 
 	if (tank == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Tank is not possessing any Pawn"));
+		UE_LOG(LogTemp, Warning, TEXT("PlayerController is not possessing any Pawn"));
 	}
 
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Tank is possessing %s"), *tank->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("PlayerController is possessing %s"), *tank->GetName());
 	}
 }
 
