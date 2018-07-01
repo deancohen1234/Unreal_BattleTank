@@ -19,7 +19,35 @@ void ATankPlayerController::BeginPlay()
 	}
 }
 
+void ATankPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	AimTowardsCrosshairs();
+}
+
 ATank* ATankPlayerController::GetControlledTank() const
 {
 	return Cast<ATank>(GetPawn());
+}
+
+void ATankPlayerController::AimTowardsCrosshairs() 
+{
+	if (!GetControlledTank()) { return; }
+	
+	FVector hitLocation; //Out parameters
+
+	if (GetSightRayHitLocation(hitLocation)) 
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Hit location: %s"), *hitLocation.ToString());
+
+		//tell controlled tank to aim at this point
+	}
+}
+
+//get world location through crosshair, true if hit landscape
+bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
+{
+	OutHitLocation = FVector(3.f, 3.f, 3.f);
+	return true;
 }
