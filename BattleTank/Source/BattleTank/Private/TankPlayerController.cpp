@@ -39,7 +39,6 @@ void ATankPlayerController::AimTowardsCrosshairs()
 
 	if (GetSightRayHitLocation(hitLocation)) 
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Hit location: %s"), *hitLocation.ToString());
 
 		//tell controlled tank to aim at this point
 	}
@@ -48,6 +47,14 @@ void ATankPlayerController::AimTowardsCrosshairs()
 //get world location through crosshair, true if hit landscape
 bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
 {
+	//find the crosshair position
+	int32 viewportSizeX, viewPortSizeY;
+	GetViewportSize(viewportSizeX, viewPortSizeY);
+
+	FVector2D ScreenLocation = FVector2D(CrossHairXLocation * viewportSizeX, CrossHairYLocation * viewPortSizeY);
 	OutHitLocation = FVector(3.f, 3.f, 3.f);
+
+	UE_LOG(LogTemp, Warning, TEXT("Screen Location: %s"), *ScreenLocation.ToString());
+
 	return true;
 }
