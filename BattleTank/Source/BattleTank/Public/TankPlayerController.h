@@ -27,10 +27,15 @@ private:
 	bool GetLookDirection(FVector2D ScreenLocation, FVector & LookDirection) const;
 
 	bool GetSightRayHitLocation(FVector& OutHitLocation) const;
+	bool GetLookVectorHitLocation(FVector Direction, FVector& Location) const;
 
 	UPROPERTY(EditAnywhere)
 	float CrossHairXLocation = 0.5f;
 
 	UPROPERTY(EditAnywhere)
-	float CrossHairYLocation = 0.33333f;	
+	float CrossHairYLocation = 0.33333f;
+
+	UPROPERTY(EditAnywhere)
+	float AimingRange = 1000000.f;
+
 };

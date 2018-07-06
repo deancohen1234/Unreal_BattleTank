@@ -39,7 +39,9 @@ void ATankPlayerController::AimTowardsCrosshairs()
 
 	if (GetSightRayHitLocation(hitLocation)) 
 	{
-
+		
+		UE_LOG(LogTemp, Warning, TEXT("Hit Location is at %s"), *hitLocation.ToString());
+		
 		//tell controlled tank to aim at this point
 	}
 }
@@ -58,10 +60,32 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 
 	if (GetLookDirection(ScreenLocation, LookDirection)) 
 	{
-		UE_LOG(LogTemp, Warning, TEXT("World Direction: %s"), *LookDirection.ToString());
+		GetLookVectorHitLocation(LookDirection, OutHitLocation);
 	}
 
 	return true;
+}
+
+bool ATankPlayerController::GetLookVectorHitLocation(FVector Direction, FVector & HitLocation) const
+{
+	FHitResult hitResult;
+
+	FVector startLocation = PlayerCameraManager->GetCameraLocation();
+	FVector endLocation = startLocation + (Direction * AimingRange);
+
+	if (GetWorld()->LineTraceSingleByChannel(
+		hitResult,
+		startLocation,
+		endLocation,
+		ECollisionChannel::ECC_Visibility))
+	{
+		HitLocation = hitResult.Location;
+		return true;
+	}
+
+	HitLocation = FVector(0, 0, 0);
+	return false;
+	
 }
 
 bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector & LookDirection) const
