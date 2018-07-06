@@ -6,7 +6,7 @@ void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ATank* tank = GetPossessedTank();
+	ATank* tank = GetControlledTank();
 
 	if (tank == nullptr) 
 	{
@@ -14,11 +14,11 @@ void ATankAIController::BeginPlay()
 		return;
 	}
 
-	ATank* playerControlledTank = GetPlayerTank();
+	TargetedTank = GetPlayerTank();
 
-	if (playerControlledTank) 
+	if (TargetedTank) 
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s is targeting %s"), *tank->GetName(), *playerControlledTank->GetName());
+		UE_LOG(LogTemp, Warning, TEXT("%s is targeting %s"), *tank->GetName(), *TargetedTank->GetName());
 	}
 
 	else 
@@ -27,7 +27,15 @@ void ATankAIController::BeginPlay()
 	}
 }
 
-ATank* ATankAIController::GetPossessedTank() const
+void ATankAIController::Tick(float DeltaTime)
+{
+	if (!TargetedTank) { return; }
+	if (!GetControlledTank()) { return; }
+
+	GetControlledTank()->AimAt(TargetedTank->GetActorLocation());
+}
+
+ATank* ATankAIController::GetControlledTank() const
 {
 	return Cast<ATank>(GetPawn());
 }
