@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Classes/Kismet/GameplayStatics.h"
 #include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
 
