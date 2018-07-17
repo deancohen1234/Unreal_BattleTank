@@ -33,6 +33,9 @@ void UTankAimingComponent::SetAimingLocation(FVector location, float speed)
 		StartLocation,
 		location,
 		speed,
+		false,
+		0,
+		0,
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
 	//calculate the outlaunchvelocity
@@ -42,12 +45,12 @@ void UTankAimingComponent::SetAimingLocation(FVector location, float speed)
 		MoveBarrelTowards(AimDirection);
 
 		auto time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f: Aim Solution Found"), time);
+		//UE_LOG(LogTemp, Warning, TEXT("%f: Aim Solution Found"), time);
 	}
 	else 
 	{
 		auto time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f: No Solution Found"), time);
+		//UE_LOG(LogTemp, Warning, TEXT("%f: No Solution Found"), time);
 	}
 }
 
