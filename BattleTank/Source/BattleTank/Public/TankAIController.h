@@ -15,11 +15,6 @@ class BATTLETANK_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
 	
-public:
-	//in seconds
-	UPROPERTY(EditAnywhere)
-	float FireRate = 3.0f;
-	
 private:
 
 	ATank * TargetedTank = nullptr;
