@@ -15,6 +15,10 @@ class BATTLETANK_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
 	
+public:
+	//in seconds
+	UPROPERTY(EditAnywhere)
+	float FireRate = 3.0f;
 	
 private:
 
@@ -22,7 +26,5 @@ private:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-	
-	ATank* GetControlledTank() const;
-	ATank* GetPlayerTank() const;
+
 };

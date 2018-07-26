@@ -42,13 +42,13 @@ private:
 
 	//local reference to barrel for spawning projectile
 	UTankBarrel* Barrel = nullptr;
+	float ReloadTimeInSeconds = 3;
+	double LastFireTime = 0;
+
 
 	ATank();
-
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;	
 	
