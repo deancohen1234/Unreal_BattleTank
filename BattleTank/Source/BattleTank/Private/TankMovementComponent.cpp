@@ -14,14 +14,10 @@ void UTankMovementComponent::Initialize(UTankTrack* LeftTrackToSet, UTankTrack* 
 
 void UTankMovementComponent::IntendMoveForward(float Throw) 
 {
-	//UE_LOG(LogTemp, Error, TEXT("Intend Move Forward Throw: %f"), Throw);
-
 	if (!LeftTrack || !RightTrack) { return; }
 
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(Throw);
-
-	//TODO prevent double speed due to dual control use
 }
 
 void UTankMovementComponent::IntendTurnRight(float Throw)
@@ -31,7 +27,6 @@ void UTankMovementComponent::IntendTurnRight(float Throw)
 	LeftTrack->SetThrottle(Throw);
 	RightTrack->SetThrottle(-Throw);
 
-	//TODO prevent double speed due to dual control use
 }
 
 void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, bool bForceMaxSpeed)
@@ -45,7 +40,5 @@ void UTankMovementComponent::RequestDirectMove(const FVector & MoveVelocity, boo
 
 	IntendMoveForward(ForwardThrow);
 	IntendTurnRight(RightThrow);
-
-	//UE_LOG(LogTemp, Warning, TEXT("%s is moving towards %s"), *name, *AIForwardIntention.ToString());
 }
 
