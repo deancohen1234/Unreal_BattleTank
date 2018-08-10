@@ -13,13 +13,17 @@ class BATTLETANK_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+protected:
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	ATank * GetControlledTank() const;
+
 private:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
 	//start the tank moving the barrel so that  a shot would hit where
 	// the crosshairs interects the world
-	ATank * GetControlledTank() const;
+
 	void AimTowardsCrosshairs();
 
 	bool GetLookDirection(FVector2D ScreenLocation, FVector & LookDirection) const;
