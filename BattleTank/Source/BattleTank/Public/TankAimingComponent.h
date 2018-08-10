@@ -36,7 +36,7 @@ public:
 protected:
 	// Called when the game starts
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EFiringStatus FiringState = EFiringStatus::Locked;
+	EFiringStatus FiringState = EFiringStatus::Reloading;
 
 private :	
 	// Called every frame
