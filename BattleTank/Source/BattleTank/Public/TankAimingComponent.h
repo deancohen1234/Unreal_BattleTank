@@ -31,7 +31,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTankBarrel* Barrel, UTankTurret* Turret);
 
-	void SetAimingLocation(FVector location, float speed);
+	void SetAimingLocation(FVector location);
 
 protected:
 	// Called when the game starts
@@ -45,4 +45,7 @@ private :
 
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float LaunchSpeed = 100000; //TODO find sensible default
 };

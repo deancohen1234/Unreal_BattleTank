@@ -21,7 +21,7 @@ void UTankAimingComponent::Initialize(UTankBarrel* _Barrel, UTankTurret* _Turret
 	Turret = _Turret;
 }
 
-void UTankAimingComponent::SetAimingLocation(FVector location, float speed)
+void UTankAimingComponent::SetAimingLocation(FVector location)
 {
 	if (!ensure(Barrel)) { return; }
 
@@ -34,7 +34,7 @@ void UTankAimingComponent::SetAimingLocation(FVector location, float speed)
 		OutLaunchVelocity,
 		StartLocation,
 		location,
-		speed,
+		LaunchSpeed,
 		false,
 		0,
 		0,

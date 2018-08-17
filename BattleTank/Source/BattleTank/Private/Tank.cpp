@@ -3,7 +3,6 @@
 #include "Tank.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
-#include "TankAimingComponent.h"
 #include "Projectile.h"
 
 // Sets default values
@@ -17,13 +16,6 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay(); //needed for BP beginplay to run
-	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
-}
-
-void ATank::AimAt(FVector hitLocation) 
-{
-	if (!ensure(TankAimingComponent)) { return;	}
-	TankAimingComponent->SetAimingLocation(hitLocation, LaunchSpeed);
 }
 
 void ATank::Fire()
@@ -38,7 +30,7 @@ void ATank::Fire()
 		//spawn projectile
 		auto projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, location, rotation);
 
-		projectile->Launch(LaunchSpeed);
+		projectile->Launch(3000); //TODO Get rid of the magic number and firing functionality in the tank altogether;
 		LastFireTime = FPlatformTime::Seconds();
 	}
 }
