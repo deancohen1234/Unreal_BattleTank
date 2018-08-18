@@ -16,6 +16,23 @@ UTankAimingComponent::UTankAimingComponent()
 	// ...
 }
 
+void UTankAimingComponent::BeginPlay() 
+{
+	//so that first fire is after initial reload
+	LastFireTime = FPlatformTime::Seconds();
+}
+
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) 
+{
+	UE_LOG(LogTemp, Warning, TEXT("Aiming Comp. Ticking"));
+
+	if ((FPlatformTime::Seconds() - LastFireTime) >= ReloadTimeInSeconds) 
+	{
+		FiringState = EFiringStatus::Reloading;
+	}
+
+}
+
 void UTankAimingComponent::Initialize(UTankBarrel* _Barrel, UTankTurret* _Turret) 
 {
 	Barrel = _Barrel;
@@ -69,13 +86,13 @@ void UTankAimingComponent::MoveGunTowards(FVector AimDirection)
 
 void UTankAimingComponent::Fire()
 {
-	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime >= ReloadTimeInSeconds);
 	//UE_LOG(LogTemp, Warning, TEXT("Firing"));
 
-	if (!ensure(Barrel || ProjectileBlueprint)) { return; }
-
-	if (isReloaded) 
+	if (FiringState != EFiringStatus::Reloading) 
 	{
+		if (!ensure(Barrel)) { return; }
+		if (!ensure(ProjectileBlueprint)) { return; }
+
 		FVector location = Barrel->GetSocketLocation(FName("Projectile"));
 		FRotator rotation = Barrel->GetSocketRotation(FName("Projectile"));
 
