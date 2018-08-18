@@ -26,5 +26,6 @@ void ATankAIController::Tick(float DeltaTime)
 	MoveToActor(PlayerTank, AcceptanceRadius); //TODO check radius is in centers
 
 	AimingComponent->SetAimingLocation(PlayerTank->GetActorLocation());
+	AimingComponent->Fire();
 	//ControlledTank->Fire(); //TODO Fix the firing mechanic by not using the tank
 }

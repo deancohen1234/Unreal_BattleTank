@@ -3,6 +3,7 @@
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
 #include "TankTurret.h"
+#include "Projectile.h"
 #include "Classes/Kismet/GameplayStatics.h"
 
 // Sets default values for this component's properties
@@ -64,5 +65,25 @@ void UTankAimingComponent::MoveGunTowards(FVector AimDirection)
 	
 	Barrel->Elevate(DeltaRotator.Pitch);
 	Turret->Yaw(DeltaRotator.Yaw);
+}
+
+void UTankAimingComponent::Fire()
+{
+	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime >= ReloadTimeInSeconds);
+	//UE_LOG(LogTemp, Warning, TEXT("Firing"));
+
+	if (!ensure(Barrel || ProjectileBlueprint)) { return; }
+
+	if (isReloaded) 
+	{
+		FVector location = Barrel->GetSocketLocation(FName("Projectile"));
+		FRotator rotation = Barrel->GetSocketRotation(FName("Projectile"));
+
+		//spawn projectile
+		auto projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, location, rotation);
+
+		projectile->Launch(LaunchSpeed); //TODO Get rid of the magic number and firing functionality in the tank altogether;
+		LastFireTime = FPlatformTime::Seconds();
+	}
 }
 
