@@ -30,16 +30,17 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimTowardsCrosshairs() 
 {
-	if (!ensure(TankAimingComponent)) { return;	}
+	if (!GetPawn()) { return; } //e.g if not possessing
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+
+	if (!ensure(AimingComponent)) { return; }
 	
 	FVector hitLocation; //Out parameters
 
 	if (GetSightRayHitLocation(hitLocation)) 
 	{		
 		float time = FPlatformTime::Seconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f Get Sight Found"), time);
-
-		TankAimingComponent->SetAimingLocation(hitLocation);
+		AimingComponent->SetAimingLocation(hitLocation);
 	}
 }
 
