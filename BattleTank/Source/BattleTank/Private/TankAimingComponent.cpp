@@ -19,25 +19,47 @@ UTankAimingComponent::UTankAimingComponent()
 void UTankAimingComponent::BeginPlay() 
 {
 	//so that first fire is after initial reload
-	LastFireTime = FPlatformTime::Seconds();
-}
-
-void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) 
-{
-	UE_LOG(LogTemp, Warning, TEXT("Aiming Comp. Ticking"));
-
-	if ((FPlatformTime::Seconds() - LastFireTime) >= ReloadTimeInSeconds) 
-	{
-		FiringState = EFiringStatus::Reloading;
-	}
+	LastFireTime = UGameplayStatics::GetRealTimeSeconds(GetWorld());
 
 }
 
-void UTankAimingComponent::Initialize(UTankBarrel* _Barrel, UTankTurret* _Turret) 
+void UTankAimingComponent::Initialize(UTankBarrel* _Barrel, UTankTurret* _Turret)
 {
 	Barrel = _Barrel;
 	Turret = _Turret;
 }
+
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) 
+{
+	float time = UGameplayStatics::GetRealTimeSeconds(GetWorld());
+
+	if ((time - LastFireTime) < ReloadTimeInSeconds) 
+	{
+		FiringState = EFiringStatus::Reloading;
+	}
+	else if (IsBarrelMoving()) 
+	{
+		FiringState = EFiringStatus::Aiming;
+	}
+	else 
+	{
+		FiringState = EFiringStatus::Locked;
+	}
+
+}
+
+bool UTankAimingComponent::IsBarrelMoving() 
+{
+	if (!ensure(Barrel)) { return false; }
+
+	bool BarrelIsMoving = false;
+
+	BarrelIsMoving = Barrel->GetForwardVector().Equals(AimDirection, 0.01f);
+
+	return !BarrelIsMoving;
+}
+
+
 
 void UTankAimingComponent::SetAimingLocation(FVector location)
 {
@@ -61,7 +83,7 @@ void UTankAimingComponent::SetAimingLocation(FVector location)
 	//calculate the outlaunchvelocity
 	if (bHaveAimSolution)
 	{
-		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+		AimDirection = OutLaunchVelocity.GetSafeNormal();
 		MoveGunTowards(AimDirection);
 	}
 	else 
@@ -100,7 +122,7 @@ void UTankAimingComponent::Fire()
 		auto projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, location, rotation);
 
 		projectile->Launch(LaunchSpeed); //TODO Get rid of the magic number and firing functionality in the tank altogether;
-		LastFireTime = FPlatformTime::Seconds();
+		LastFireTime = UGameplayStatics::GetRealTimeSeconds(GetWorld());
 	}
 }
 

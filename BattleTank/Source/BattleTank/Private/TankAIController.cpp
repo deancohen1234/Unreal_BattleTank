@@ -27,5 +27,4 @@ void ATankAIController::Tick(float DeltaTime)
 
 	AimingComponent->SetAimingLocation(PlayerTank->GetActorLocation());
 	AimingComponent->Fire();
-	//ControlledTank->Fire(); //TODO Fix the firing mechanic by not using the tank
 }
