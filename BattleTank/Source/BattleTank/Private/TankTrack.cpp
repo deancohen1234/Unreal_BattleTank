@@ -4,34 +4,37 @@
 
 UTankTrack::UTankTrack() 
 {
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UTankTrack::SetThrottle(float Throttle) 
-{
-	auto ForceApplied = GetForwardVector() * Throttle * TrackMaxDrivingForce;
-	auto ForceLocation = GetComponentLocation();
-
-	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
-	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
-
-}
-
-void UTankTrack::BeginPlay() 
+void UTankTrack::BeginPlay()
 {
 	Super::BeginPlay();
 
 	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
 }
 
-void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+void UTankTrack::SetThrottle(float Throttle) 
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	
+	CurrentThrottle = FMath::Clamp(CurrentThrottle + Throttle, -1.0f, 1.0f);
+}
+
+void UTankTrack::DriveTrack() 
+{
+	auto ForceApplied = GetForwardVector() * CurrentThrottle * TrackMaxDrivingForce;
+	auto ForceLocation = GetComponentLocation();
+
+	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
+	TankRoot->AddForceAtLocation(ForceApplied, ForceLocation);
+}
+
+void UTankTrack::ApplySidewaysForce()
+{
 	//Calculate slippage speed
 	auto SlippageSpeed = FVector::DotProduct(GetComponentVelocity(), GetRightVector());
 
 	//work-out the required acceleration this frame to correct
+	auto DeltaTime = GetWorld()->GetDeltaSeconds();
 	auto CorrectionAcceleration = -SlippageSpeed / DeltaTime * GetRightVector();
 
 	//calculate and apply sideways force
@@ -43,5 +46,13 @@ void UTankTrack::TickComponent(float DeltaTime, enum ELevelTick TickType, FActor
 void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) 
 {
 	UE_LOG(LogTemp, Warning, TEXT("Tracks Hitting"));
+
+	//Drive tracks
+	DriveTrack();
+	//Apply sideways force
+	ApplySidewaysForce();
+	//Reset Throttle
+	CurrentThrottle = 0;
+
 }
 
