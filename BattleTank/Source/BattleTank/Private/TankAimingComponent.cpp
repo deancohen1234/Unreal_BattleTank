@@ -103,6 +103,16 @@ void UTankAimingComponent::MoveGunTowards(FVector AimDirection)
 	auto DeltaRotator = AimDirectionRotator - BarrelRotator;
 	
 	Barrel->Elevate(DeltaRotator.Pitch);
+
+	if (DeltaRotator.Yaw >= 180.0f) 
+	{
+		DeltaRotator.Yaw = -360 + DeltaRotator.Yaw;
+	}
+	else if (DeltaRotator.Yaw <= -180.0f) 
+	{
+		DeltaRotator.Yaw = 360.0f + DeltaRotator.Yaw;
+	}
+
 	Turret->Yaw(DeltaRotator.Yaw);
 }
 

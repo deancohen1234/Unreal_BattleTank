@@ -45,8 +45,6 @@ void UTankTrack::ApplySidewaysForce()
 
 void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) 
 {
-	UE_LOG(LogTemp, Warning, TEXT("Tracks Hitting"));
-
 	//Drive tracks
 	DriveTrack();
 	//Apply sideways force
