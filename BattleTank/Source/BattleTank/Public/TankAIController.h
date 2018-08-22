@@ -14,14 +14,18 @@ UCLASS()
 class BATTLETANK_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
-	
+
+protected:
+
+	UPROPERTY(EditAnywhere)
+	float AcceptanceRadius = 1000.0f;
+
 private:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
 	//how close can the AI tank get
-	float AcceptanceRadius = 300.0f;
 
 	UTankAimingComponent* TankAimingComponent;
 

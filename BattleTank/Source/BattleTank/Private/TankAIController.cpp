@@ -26,5 +26,9 @@ void ATankAIController::Tick(float DeltaTime)
 	MoveToActor(PlayerTank, AcceptanceRadius); //TODO check radius is in centers
 
 	AimingComponent->SetAimingLocation(PlayerTank->GetActorLocation());
-	AimingComponent->Fire();
+
+	if (AimingComponent->GetFiringState() == EFiringStatus::Locked) 
+	{
+		AimingComponent->Fire();
+	}
 }

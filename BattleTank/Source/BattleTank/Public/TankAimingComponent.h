@@ -37,6 +37,8 @@ public:
 
 	void SetAimingLocation(FVector location);
 
+	EFiringStatus GetFiringState() const;
+
 protected:
 	// Called when the game starts
 	UPROPERTY(BlueprintReadOnly, Category = "State")
