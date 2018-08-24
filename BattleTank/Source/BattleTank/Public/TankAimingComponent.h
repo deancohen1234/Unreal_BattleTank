@@ -12,7 +12,8 @@ enum class EFiringStatus : uint8
 {
 	Reloading,
 	Aiming,
-	Locked
+	Locked,
+	NoAmmo
 };
 
 //forward declaration
@@ -38,6 +39,9 @@ public:
 	void SetAimingLocation(FVector location);
 
 	EFiringStatus GetFiringState() const;
+
+	UFUNCTION(BlueprintCallable)
+	int GetAmmoCount() const;
 
 protected:
 	// Called when the game starts
@@ -69,4 +73,6 @@ private :
 	float ReloadTimeInSeconds = 3;
 
 	double LastFireTime = 0;
+	int AmmoCount = 3;
+
 };

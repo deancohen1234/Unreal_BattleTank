@@ -33,7 +33,11 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 {
 	float time = UGameplayStatics::GetRealTimeSeconds(GetWorld());
 
-	if ((time - LastFireTime) < ReloadTimeInSeconds) 
+	if (AmmoCount <= 0) 
+	{
+		FiringState = EFiringStatus::NoAmmo;
+	}
+	else if ((time - LastFireTime) < ReloadTimeInSeconds) 
 	{
 		FiringState = EFiringStatus::Reloading;
 	}
@@ -51,6 +55,11 @@ void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickTy
 EFiringStatus UTankAimingComponent::GetFiringState() const
 {
 	return FiringState;
+}
+
+int UTankAimingComponent::GetAmmoCount() const 
+{
+	return AmmoCount;
 }
 
 bool UTankAimingComponent::IsBarrelMoving() 
@@ -123,9 +132,8 @@ void UTankAimingComponent::MoveGunTowards(FVector AimDirection)
 
 void UTankAimingComponent::Fire()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Firing"));
 
-	if (FiringState != EFiringStatus::Reloading) 
+	if (FiringState == EFiringStatus::Locked || FiringState == EFiringStatus::Aiming)
 	{
 		if (!ensure(Barrel)) { return; }
 		if (!ensure(ProjectileBlueprint)) { return; }
@@ -138,6 +146,8 @@ void UTankAimingComponent::Fire()
 
 		projectile->Launch(LaunchSpeed); //TODO Get rid of the magic number and firing functionality in the tank altogether;
 		LastFireTime = UGameplayStatics::GetRealTimeSeconds(GetWorld());
+
+		AmmoCount--;
 	}
 }
 
