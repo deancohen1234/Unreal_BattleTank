@@ -41,7 +41,7 @@ public:
 	EFiringStatus GetFiringState() const;
 
 	UFUNCTION(BlueprintCallable)
-	int GetAmmoCount() const;
+	int32 GetAmmoCount() const;
 
 protected:
 	// Called when the game starts
@@ -72,7 +72,10 @@ private :
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
 	float ReloadTimeInSeconds = 3;
 
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	int32 AmmoCount = 3;
+
 	double LastFireTime = 0;
-	int AmmoCount = 3;
+
 
 };

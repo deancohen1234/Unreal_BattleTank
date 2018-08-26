@@ -7,13 +7,14 @@
 #include "Projectile.generated.h"
 
 class UProjectileMovementComponent;
+class UParticleSystemComponent;
 
 UCLASS()
 class BATTLETANK_API AProjectile : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AProjectile();
 
@@ -21,7 +22,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -29,6 +30,12 @@ public:
 
 private:
 
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UStaticMeshComponent * CollisionMesh = nullptr;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UParticleSystemComponent * LaunchBlast = nullptr;
+
 	UProjectileMovementComponent * ProjectileMovementComponent = nullptr;
-	
+
 };
