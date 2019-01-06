@@ -17,8 +17,8 @@ class BATTLETANK_API ATankAIController : public AAIController
 
 protected:
 
-	UPROPERTY(EditAnywhere)
-	float AcceptanceRadius = 1000.0f;
+	UPROPERTY(EditDefaultsOnly)
+	float AcceptanceRadius = 7500.0f;
 
 private:
 
